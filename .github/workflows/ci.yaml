@@ -3,19 +3,24 @@ on:
   pull_request:
     branches:
       - develop
+
 jobs:
   check-application:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repository
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v4  
 
       - name: Set up Node.js
-      - uses: actions/setup-node@v2
+        uses: actions/setup-node@v4  
         with:
           node-version: '21.x'
-      - run: npm install
-      - run: npm run test
+      
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run test
      
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -23,9 +28,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       
-      - name: Build and push
+      - name: Build Docker image
         id: docker_build
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v5  # Atualizado para v5
         with:
           push: false
           tags: philippenunes/integracao-continua:latest
